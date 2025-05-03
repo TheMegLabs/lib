@@ -3,7 +3,7 @@ module lib::decimal;
 
 // 1e18
 const WAD: u256 = 1000000000000000000;
-const U64_MAX: u256 = 18446744073709551615;
+const U64_MAX: u64 = 18446744073709551615;
 
 public struct Decimal has copy, drop, store {
     value: u256,
@@ -101,8 +101,8 @@ public fun floor(a: Decimal): u64 {
 }
 
 public fun saturating_floor(a: Decimal): u64 {
-    if (a.value > U64_MAX * WAD) {
-        (U64_MAX as u64)
+    if (a.value > (U64_MAX as u256) * WAD) {
+        U64_MAX
     } else {
         floor(a)
     }
@@ -146,4 +146,8 @@ public fun max(a: Decimal, b: Decimal): Decimal {
     } else {
         b
     }
+}
+
+public fun max_decimal(): Decimal {
+    from(U64_MAX)
 }
